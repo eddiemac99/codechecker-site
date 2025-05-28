@@ -2,61 +2,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Checker Pro</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f7f9fc;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
-        }
-        header {
-            padding: 20px;
-        }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 1.25rem;
-            max-width: 600px;
-            margin: 0 auto 30px;
-        }
-        .button {
-            padding: 12px 24px;
-            font-size: 1rem;
-            background-color: #0056b3;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .button:hover {
-            background-color: #004099;
-        }
-        footer {
-            position: absolute;
-            bottom: 10px;
-            font-size: 0.9rem;
-            color: #aaa;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Code Checker Pro</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    header {
+      padding: 20px;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+    .upload-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+    input[type="file"] {
+      padding: 10px;
+      font-size: 1rem;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #0056b3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #004099;
+    }
+    .result {
+      display: none;
+      margin-top: 20px;
+      font-size: 1.1rem;
+    }
+    .pass {
+      color: green;
+    }
+    .fail {
+      color: red;
+    }
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Code Checker Pro</h1>
-        <p>Your virtual electrical inspector. Upload a photo of your work, and we’ll check it against the National Electrical Code (NEC).</p>
-        <a href="#" class="button">Upload Your Photo</a>
-    </header>
-    <footer>&copy; 2025 Code Checker Pro</footer>
+  <header>
+    <h1>Welcome to Code Checker Pro</h1>
+    <p>Upload your electrical work and we'll simulate whether it passes inspection — instant virtual feedback.</p>
+    <div class="upload-container">
+      <input type="file" id="photoUpload" />
+      <button onclick="simulateCheck()">Submit Photo</button>
+      <div class="result pass" id="passMessage">✅ Your installation looks good and should pass inspection!</div>
+      <div class="result fail" id="failMessage">❌ Warning: Violations detected. This may fail inspection. Please review code compliance.</div>
+    </div>
+  </header>
+  <footer>&copy; 2025 Code Checker Pro</footer>
+
+  <script>
+    function simulateCheck() {
+      const fileInput = document.getElementById('photoUpload');
+      if (fileInput.files.length === 0) {
+        alert('Please select a photo first!');
+        return;
+      }
+
+      document.getElementById('passMessage').style.display = 'none';
+      document.getElementById('failMessage').style.display = 'none';
+
+      const randomOutcome = Math.random() < 0.5;
+      if (randomOutcome) {
+        document.getElementById('passMessage').style.display = 'block';
+      } else {
+        document.getElementById('failMessage').style.display = 'block';
+      }
+    }
+  </script>
 </body>
 </html>
