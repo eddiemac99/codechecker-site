@@ -1,12 +1,62 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Code Checker Pro</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Checker Pro</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        header {
+            padding: 20px;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        .button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #004099;
+        }
+        footer {
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Code Checker Pro</h1>
-    <p>Your virtual electrical inspector. Upload a photo, and we'll check your work against the NEC.</p>
+    <header>
+        <h1>Welcome to Code Checker Pro</h1>
+        <p>Your virtual electrical inspector. Upload a photo of your work, and we’ll check it against the National Electrical Code (NEC).</p>
+        <a href="#" class="button">Upload Your Photo</a>
+    </header>
+    <footer>&copy; 2025 Code Checker Pro</footer>
 </body>
 </html>
