@@ -1,112 +1,120 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Code Checker Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virtual Inspector - Simulated Demo</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f7f9fc;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      background: #f0f2f5 url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      padding: 40px;
       text-align: center;
     }
-    header {
+    .upload-box {
+      background: white;
       padding: 20px;
-    }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 1.25rem;
-      max-width: 600px;
-      margin: 0 auto 30px;
-    }
-    .upload-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-    }
-    input[type="file"] {
-      padding: 10px;
-      font-size: 1rem;
-    }
-    button {
-      padding: 12px 24px;
-      font-size: 1rem;
-      background-color: #0056b3;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #004099;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      max-width: 500px;
+      margin: auto;
     }
     .result {
-      display: none;
       margin-top: 20px;
-      font-size: 1.1rem;
+      display: none;
     }
-    .pass {
-      color: green;
+    .result.pass {
+      border: 3px solid green;
     }
-    .fail {
-      color: red;
+    .result.fail {
+      border: 3px solid red;
     }
-    footer {
-      position: absolute;
-      bottom: 10px;
-      font-size: 0.9rem;
-      color: #aaa;
+    .annotated-img {
+      max-width: 100%;
+      margin-top: 20px;
+    }
+    .badge {
+      display: inline-block;
+      background: orange;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Welcome to Code Checker Pro</h1>
-    <p>Upload your electrical work and we'll simulate whether it passes inspection — instant virtual feedback.</p>
-    <div class="upload-container">
-      <input type="file" id="photoUpload" />
-      <button onclick="simulateCheck()">Submit Photo</button>
-      <div class="result pass" id="passMessage">✅ Your installation looks good and should pass inspection!</div>
-      <div class="result fail" id="failMessage">❌ Warning: Violations detected. This may fail inspection. Please review code compliance.</div>
-    </div>
-  </header>
-  <footer>&copy; 2025 Code Checker Pro</footer>
+  <h1>Virtual Inspector <span class="badge">BETA</span></h1>
+  <p>Future-ready AI inspections powered by Code Checker Pro & M&M Electric</p>
+
+  <div class="upload-box">
+    <h2>Upload Photo for Inspection</h2>
+    <input type="file" accept="image/*" id="photoInput" />
+    <button onclick="analyzeImage()">Run Inspection</button>
+  </div>
+
+  <div id="resultContainer" class="result">
+    <h3 id="inspectionResult"></h3>
+    <img id="annotatedImage" class="annotated-img" />
+  </div>
 
   <script>
-    function simulateCheck() {
-      const fileInput = document.getElementById('photoUpload');
-      if (fileInput.files.length === 0) {
-        alert('Please select a photo first!');
-        return;
-      }
+    function analyzeImage() {
+      const fileInput = document.getElementById('photoInput');
+      const resultContainer = document.getElementById('resultContainer');
+      const resultText = document.getElementById('inspectionResult');
+      const annotatedImg = document.getElementById('annotatedImage');
 
-      document.getElementById('passMessage').style.display = 'none';
-      document.getElementById('failMessage').style.display = 'none';
+      if (!fileInput.files.length) return alert("Please select a photo.");
 
-      const randomOutcome = Math.random() < 0.5;
-      if (randomOutcome) {
-        document.getElementById('passMessage').style.display = 'block';
-      } else {
-        document.getElementById('failMessage').style.display = 'block';
-      }
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const imageUrl = e.target.result;
+        const passed = Math.random() > 0.5;
+
+        resultContainer.style.display = 'block';
+        resultContainer.className = 'result ' + (passed ? 'pass' : 'fail');
+        resultText.textContent = passed ? '✅ Passed Inspection' : '❌ Failed Inspection';
+
+        // Simulate annotated image
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.onload = function() {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          if (!passed) {
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.arc(img.width / 2, img.height / 2, 60, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.font = '40px Arial';
+            ctx.fillStyle = 'red';
+            ctx.fillText('Code Violation', img.width / 2 - 100, img.height / 2 - 70);
+          } else {
+            ctx.strokeStyle = 'green';
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.arc(img.width / 2, img.height / 2, 80, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.font = '40px Arial';
+            ctx.fillStyle = 'green';
+            ctx.fillText('PASSED', img.width / 2 - 60, img.height / 2 - 70);
+          }
+
+          annotatedImg.src = canvas.toDataURL();
+        };
+        img.src = imageUrl;
+      };
+
+      reader.readAsDataURL(file);
     }
   </script>
-</script>
-<!-- Trigger redeploy -->
-</body>
-</html>
-
 </body>
 </html>
